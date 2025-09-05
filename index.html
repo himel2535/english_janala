@@ -131,10 +131,15 @@
       ></div>
     </section>
 
+    <!-- spinner -->
+    <section id="spinner" class="flex justify-center items-center py-10 hidden">
+      <span class="loading loading-bars loading-xl"></span>
+    </section>
+
     <!-- word -->
     <section
       id="word-container"
-      class="bg-gray-100 p-10 w-11/12 mx-auto my-10 grid grid-cols-3 gap-5 rounded-xl"
+      class="bg-gray-100 p-10 w-11/12 mx-auto my-10 grid  lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 rounded-xl"
     >
       <div class="text-center col-span-full space-y-6 font-bangla">
         <p class="text-xl font-medium text-gray-400">
@@ -146,14 +151,12 @@
 
     <!-- Open the modal using ID.showModal() method -->
     <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
-    <dialog id="word_modal" class="modal modal-bottom sm:modal-middle">
+    <dialog id="word_modal" class="modal modal-middle">
       <div class="modal-box">
-        <div id="details-container" class="space-y-5 p-5 border-1 border-sky-100 rounded-lg">
-
-          
-          
-
-        </div>
+        <div
+          id="details-container"
+          class="space-y-5 p-5 border-1 border-sky-100 rounded-lg"
+        ></div>
         <div class="modal-action">
           <form method="dialog">
             <!-- if there is a button in form, it will close the modal -->

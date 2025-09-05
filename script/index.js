@@ -1,8 +1,17 @@
+const createElements = (arr) => {
+  const htmlElements = arr.map((el) => `<span class="btn">${el}</span>`);
 
-const createElements=(arr)=>{
-    const htmlElements=arr.map(el=>`<span class="btn">${el}</span>`);
-    
-    return (htmlElements.join(" "))
+  return htmlElements.join(" ");
+};
+
+const manageSpinner = (status) => {
+  if (status === true) {
+    document.getElementById("spinner").classList.remove("hidden");
+    document.getElementById("word-container").classList.add("hidden");
+  } else {
+    document.getElementById("word-container").classList.remove("hidden");
+    document.getElementById("spinner").classList.add("hidden");
+  }
 };
 
 const loadLessons = () => {
@@ -13,12 +22,13 @@ const loadLessons = () => {
 };
 loadLessons();
 
-const removeActive=()=>{
-  const lessonButtons=document.querySelectorAll(".lesson-btn")
-  lessonButtons.forEach(btn=>btn.classList.remove("active"))
-}
+const removeActive = () => {
+  const lessonButtons = document.querySelectorAll(".lesson-btn");
+  lessonButtons.forEach((btn) => btn.classList.remove("active"));
+};
 
 const loadLevelWord = (id) => {
+  manageSpinner(true)
   const url = `https://openapi.programming-hero.com/api/level/${id}`;
   fetch(url)
     .then((res) => res.json())
@@ -46,42 +56,25 @@ const displayLessons = (lessons) => {
   }
 };
 
-// id: 162
-// level: 6
-// meaning: "অত্যাচারী"
-// pronunciation: "নেফ্যারিয়াস"
-// word: "Nefarious"
+const loadWordDetail = async (id) => {
+  const url = `https://openapi.programming-hero.com/api/word/${id}`;
 
-// {
-//     "word": "Diligent",
-//     "meaning": "পরিশ্রমী",
-//     "pronunciation": "ডিলিজেন্ট",
-//     "level": 5,
-//     "sentence": "He is a diligent student who studies every day.",
-//     "points": 5,
-//     "partsOfSpeech": "adjective",
-//     "synonyms": [
-//         "hardworking",
-//         "industrious",
-//         "persistent"
-//     ],
-//     "id": 4
-// }
-const loadWordDetail=async(id)=>{
-  const url=`https://openapi.programming-hero.com/api/word/${id}`;
+  const res = await fetch(url);
+  const details = await res.json();
+  displayWordDetails(details.data);
+};
 
-  const res=await fetch(url)
-  const details=await res.json();
-  displayWordDetails(details.data)
-}
-
-const displayWordDetails=(word)=>{
-  console.log(word)
-  const detailsBox=document.getElementById("details-container")
-  detailsBox.innerHTML=`
+const displayWordDetails = (word) => {
+  console.log(word);
+  const detailsBox = document.getElementById("details-container");
+  detailsBox.innerHTML = `
   
   <div>
-            <h2 class="text-2xl font-bold">${word.word} (<i class="fa-solid fa-microphone-lines"></i> :  ${word.pronunciation})</h2>
+            <h2 class="text-2xl font-bold">${
+              word.word
+            } (<i class="fa-solid fa-microphone-lines"></i> :  ${
+    word.pronunciation
+  })</h2>
           </div>
           <div>
             <h2 class="font-bold">Meaning</h2>
@@ -98,10 +91,9 @@ const displayWordDetails=(word)=>{
             </div>
           </div>
 
-  `
+  `;
   document.getElementById("word_modal").showModal();
-}
-
+};
 
 const displayLevelWord = (words) => {
   const wordContainer = document.getElementById("word-container");
@@ -115,6 +107,7 @@ const displayLevelWord = (words) => {
       <h2 class="font-bold text-4xl">নেক্সট Lesson এ যান</h2>
     </div>
       `;
+    manageSpinner(false)
     return;
   }
 
@@ -133,11 +126,14 @@ const displayLevelWord = (words) => {
       word.pronunciation ? word.pronunciation : "pronunciation পাওয়া যায়নি"
     }</div>
         <div class="flex justify-between items-center ">
-          <button onclick="loadWordDetail(${word.id})" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] "><i class="fa-solid fa-circle-info"></i></button>
+          <button onclick="loadWordDetail(${
+            word.id
+          })" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] "><i class="fa-solid fa-circle-info"></i></button>
           <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80]"><i class="fa-solid fa-volume-high"></i></button>
         </div>
       </div>
         `;
     wordContainer.append(card);
-  }
+  };
+  manageSpinner(false);
 };
